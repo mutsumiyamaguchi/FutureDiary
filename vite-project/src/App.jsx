@@ -86,7 +86,7 @@ function App() {
     // ReactとFirebaseを連携させたサンプル
     <>
        <div style={{ padding: '2rem' }}>
-      <h1>React + Vite × Node.js API</h1>
+      <h1>フューチャーダイアリー</h1>
       <form onSubmit={handleSubmit}>
         <input
           value={name}
