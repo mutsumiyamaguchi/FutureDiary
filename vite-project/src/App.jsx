@@ -4,7 +4,7 @@ import Calendar from './components/Calendar';
 import DayDetailModal from './components/DayDetailModal';
 
 function App() {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState('');
 
   const handleDateClick = (date) => {
     setSelectedDate(date); // ← カレンダーから渡された日付
@@ -14,14 +14,22 @@ function App() {
     setSelectedDate(null);
   };
 
-  const handleAddSchedule = () => {
-    alert(`${selectedDate} の予定を追加しました！`);
-    setSelectedDate(null);
-  };
-
   const [items, setItems] = useState([]);
   const [name, setName] = useState('');
   const [editId, setEditId] = useState(null);
+
+  const handleAddSchedule = async (e) => {
+    alert(`${selectedDate} の予定を追加しました！`);
+    fetchItems();
+      // ここで送信
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: Date.now().toString(), name }),
+      });
+    console.log("送信済")
+    setSelectedDate(null);
+  };
 
   const API_URL = 'http://localhost:5000/items';
 
