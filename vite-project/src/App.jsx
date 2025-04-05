@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css';
+import TodoList from './components/TODOList';'./components/TodoList';
 import Calendar from './components/Calendar';
 import DayDetailModal from './components/DayDetailModal';
 
@@ -105,6 +106,8 @@ function App() {
         ))}
       </ul>
     </div>
+      {/* 🔽 TODO一覧表示をコンポーネント化！ */}
+      <TodoList items={items} onEdit={handleEdit} onDelete={handleDelete} />
       <Calendar onDateClick={handleDateClick} />
 
       {selectedDate && (
