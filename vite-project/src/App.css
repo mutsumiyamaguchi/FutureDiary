@@ -26,3 +26,16 @@
     padding-top: 5px;
     font-weight: bold;
   }
+
+  .mordal-component {
+    position: fixed;         /* 画面全体に固定 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;           /* 子要素をフレックスボックスで配置 */
+    justify-content: center; /* 横方向の中央揃え */
+    align-items: center;     /* 縦方向の中央揃え */
+    z-index: 1000;           /* 他の要素の上に表示 */
+  }
+  

@@ -20,7 +20,7 @@ function App() {
   const [editId, setEditId] = useState(null);
 
   const handleAddSchedule = async (e) => {
-    alert(`${selectedDate} の予定を追加しました！`);
+    alert(`${selectedDate}のTODOリストに${e} の予定を追加しました！`);
     fetchItems();
       // ここで送信
       await fetch(API_URL, {
