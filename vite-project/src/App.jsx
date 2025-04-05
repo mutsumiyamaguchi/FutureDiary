@@ -91,20 +91,11 @@ function App() {
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="名前を入力"
+          placeholder="タスク名を入力"
           required
         />
         <button type="submit">{editId ? '更新' : '登録'}</button>
       </form>
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>
-            {item.name}
-            <button onClick={() => handleEdit(item)}>編集</button>
-            <button onClick={() => handleDelete(item.id)}>削除</button>
-          </li>
-        ))}
-      </ul>
     </div>
       {/* 🔽 TODO一覧表示をコンポーネント化！ */}
       <TodoList items={items} onEdit={handleEdit} onDelete={handleDelete} />
