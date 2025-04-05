@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 admin.initializeApp({ credential: admin.credential.cert(ServiceAccount) });
 
 const db = getFirestore();
-const ScheduleCollection = 'schedules'
+const ScheduleCollection = 'schedules'  // スケジュールDB名
 
 // ミドルウェア
 app.use(cors());
@@ -20,11 +20,12 @@ app.use(express.static(path.join(__dirname, "public")));
 
 let items = [];
 
+/**スケジュールを取得するAPI*/
 app.get('/items', async (req, res) => {
   items = [];
   try {
     const itemsRef = db.collection(ScheduleCollection);
-    const snapshot = await itemsRef.get(); // ← ✅ awaitを追加
+    const snapshot = await itemsRef.get();
 
     if (snapshot.empty) {
       console.log('No matching documents.');
@@ -43,44 +44,62 @@ app.get('/items', async (req, res) => {
   }
 });
 
-app.post('/items', (req, res) => {
-  const { id, name } = req.body;
-  items.push({ id, name });
-  // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
-  const day = new Date().toLocaleDateString('sv-SE')
-  const docRef = db.collection(ScheduleCollection).doc(id);
-  const setAda = docRef.set({
-    id  : id,
-    date: day,
-    name: name,
-  });
-  res.json({ message: '登録完了', items });
-  console.log("投稿しました " + name)
+/**スケジュールを追加するAPI*/
+app.post('/items', async (req, res) => {
+  // データの定義場所
+  const { id, name,A } = req.body;
+  items.push(req.body);
+  try {
+    // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
+    const day = new Date().toLocaleDateString('sv-SE')
+    const docRef = db.collection(ScheduleCollection).doc(id);
+    const setAda = await docRef.set({
+      id  : id,
+      date: day,
+      name: name,
+    });
+    res.json({ message: '登録完了', items });
+    console.log("登録しました " + name)
+  } catch (error) {
+    console.error('Error registering documents:', error);
+    res.status(500).json({ error: '六に失敗しました' });
+  }
 });
 
-app.put('/items/:id', (req, res) => {
+/**スケジュールを更新するAPI*/
+app.put('/items/:id', async (req, res) => {
+  // データの定義場所
   const { id } = req.params;
-  const { name } = req.body;
-  items = items.map(item => item.id === id ? { id, name } : item);
-  // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
-  const day = new Date().toLocaleDateString('sv-SE')
-  const docRef = db.collection(ScheduleCollection).doc(id);
-  const setAda = docRef.set({
-    id  : id,
-    date: day,
-    name: name,
-  });
-  res.json({ message: '更新完了', items });
-  console.log("更新しました " + name)
+  const { name } = req.body;  // データ本体
+  try {
+    // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
+    const day = new Date().toLocaleDateString('sv-SE')
+    const docRef = db.collection(ScheduleCollection).doc(id);
+    const setAda = await docRef.set({
+      id  : id,
+      date: day,
+      name: name,
+    });
+    res.json({ message: '更新完了', items });
+    console.log("更新しました " + name)
+  } catch (error) {
+    console.error('Error updating documents:', error);
+    res.status(500).json({ error: '更新に失敗しました' });
+  }
 });
 
-app.delete('/items/:id', (req, res) => {
+/**スケジュールを削除するAPI*/
+app.delete('/items/:id', async (req, res) => {
   items = [];
-  const { id } = req.params;
-  items = items.filter(item => item.id !== id);
-  res.json({ message: '削除完了', items });
-  db.collection(ScheduleCollection).doc(id).delete();
-  console.log("削除しました " + id)
+  try {
+    const { id } = req.params;
+    await db.collection(ScheduleCollection).doc(id).delete();
+    res.json({ message: '削除完了', items });
+    console.log("削除しました " + id)
+  } catch (error) {
+    console.error('Error removeing documents:', error);
+    res.status(500).json({ error: '削除に失敗しました' });
+  }
 });
 
 // サーバー起動
