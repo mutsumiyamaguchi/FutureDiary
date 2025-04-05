@@ -26,7 +26,7 @@ function App() {
       await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: Date.now().toString(), name }),
+        body: JSON.stringify({ id: Date.now().toString(), name: e }),
       });
     console.log("送信済")
     setSelectedDate(null);
