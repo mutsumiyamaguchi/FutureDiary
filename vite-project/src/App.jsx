@@ -26,7 +26,8 @@ function App() {
       await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: Date.now().toString(), name: e }),
+        // 実際に送受信するデータ
+        body: JSON.stringify({ id: Date.now().toString(), name: e,A : "好きな生年月日" }),
       });
     console.log("送信済")
     setSelectedDate(null);
@@ -53,6 +54,7 @@ function App() {
       await fetch(`${API_URL}/${editId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        // 実際に送受信するデータ
         body: JSON.stringify({ name }),
       });
       setEditId(null);
@@ -61,6 +63,7 @@ function App() {
       await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        // 実際に送受信するデータ
         body: JSON.stringify({ id: Date.now().toString(), name }),
       });
     }
