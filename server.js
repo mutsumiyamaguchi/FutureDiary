@@ -23,11 +23,19 @@ let items = [];
 
 /**スケジュールを取得するAPI*/
 app.get('/items', async (req, res) => {
+  const { date } = req.query;  // クエリパラメータから日付を取得
   items = [];
   try {
     const itemsRef = db.collection(ScheduleCollection);
-    const snapshot = await itemsRef.get();
-
+    let q;
+    let snapshot;
+    /*その日で絞り込んだスケジュールを取得する*/
+    if(date)
+    {
+      snapshot = await itemsRef.where("date", "==", date).get();
+    }else{
+      snapshot = await itemsRef.get();
+    }
     if (snapshot.empty) {
       console.log('No matching documents.');
       return res.json([]);
@@ -117,6 +125,7 @@ app.put('/items/:id', async (req, res) => {
     res.status(500).json({ error: '更新に失敗しました' });
   }
 });
+
 
 /**スケジュールを削除するAPI*/
 app.delete('/items/:id', async (req, res) => {

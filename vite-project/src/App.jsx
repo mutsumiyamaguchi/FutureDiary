@@ -43,6 +43,8 @@ function App() {
   const fetchItems = async () => {
     const res = await fetch(API_URL);
     const res1 = await fetch(API_URL + '/GetIsCheckedList');
+    console.log("DateFilter")
+    const res2 = await fetch(`${API_URL}?date=2025-04-06`);
     const data = await res.json();
     setItems(data);
   };
