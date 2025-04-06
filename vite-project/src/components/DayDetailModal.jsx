@@ -260,6 +260,9 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
     const sortedTodos = updatedTodos.sort((a, b) => a.time.localeCompare(b.time));
     setTodos(sortedTodos);
 
+    
+    
+
     console.log("this is kakuninn",updatedTodos[index])
     
     try {
@@ -343,7 +346,7 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
               border: "1px solid #ccc",
               resize: "none",
             }}
-            rows="4"
+            rows="1"
             placeholder="予定内容を入力..."
           />
           <input
