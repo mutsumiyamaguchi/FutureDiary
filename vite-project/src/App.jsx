@@ -4,12 +4,13 @@ import TodoList from './components/TODOList';'./components/TodoList';
 import Calendar from './components/Calendar';
 import DayDetailModal from './components/DayDetailModal';
 import SearchForm from './components/SearchForm';
+import DiaryForm from './components/DiaryForm';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [selectedDate, setSelectedDate] = useState('');
-
+  const [selectedDiary, setSelectedDiary] = useState(false);
   const SearchSchedule = async (name) => {
     let data
     if(name == "")
@@ -55,6 +56,14 @@ function App() {
     setSelectedDate(null);
   };
 
+  const handleOpenDiaryModal = () => {
+    setSelectedDiary(true)
+  };
+
+  const handleCloseDiaryModal = () => {
+    setSelectedDiary(false)
+  };
+
   const [items, setItems] = useState([]);
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
@@ -64,7 +73,6 @@ function App() {
 
 
   const handleAddSchedule = async (e) => {
-    //alert(`${selectedDate}のTODOリストに${e.text} の予定を追加しました！`);
     toast.success(`${selectedDate}のTODOに「${e.text}」を追加しました！`);
     fetchItems();
       // ここで送信
@@ -74,8 +82,22 @@ function App() {
         // 実際に送受信するデータ
         body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,IsChecked:e.isChecked,name: e.text,Time: e.time }),
       });
-    console.log("送信済")
+    console.log("予定送信済")
     setSelectedDate(null);
+  };
+
+  const handleAddDiary = async (e) => {
+    toast.success(`${selectedDate}の日記を追加しました！`);
+    fetchItems();
+      // ここで送信
+      await fetch(API_URL + '/Diary', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // 実際に送受信するデータ
+        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,text: e}),
+      });
+    console.log("日記送信済")
+    setSelectedDiary(false);
   };
 
   const API_URL = 'http://localhost:5000/items';
@@ -138,7 +160,15 @@ function App() {
           date={selectedDate}
           onClose={handleCloseModal}
           onAdd={handleAddSchedule}
+          OnDiaryEnter={handleOpenDiaryModal}
         />
+      )}
+      {selectedDiary && (
+         <DiaryForm
+         date={selectedDate}
+         onClose={handleCloseDiaryModal}
+         onAdd={handleAddDiary}
+         />
       )}
     </>
   );
