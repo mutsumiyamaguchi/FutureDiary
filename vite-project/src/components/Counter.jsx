@@ -12,7 +12,7 @@ const Counter = () => {
   const toggleCompletion = (id) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
+        task.id === id ? { ...task, completed: isChecked} : task
       )
     );
   };
