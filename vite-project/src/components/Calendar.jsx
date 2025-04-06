@@ -59,6 +59,11 @@ export default function Calendar({ onDateClick }) {
         //       </div>
         //     );
         //   }}
+        eventTimeFormat={{ // ここで時間の表示形式を変更
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // 24時間制にする
+          }}
       />
     </>
   );
