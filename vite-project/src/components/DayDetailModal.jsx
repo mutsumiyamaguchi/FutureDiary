@@ -123,6 +123,7 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
     { text: '洗濯をする', isChecked: false },
     { text: '掃除をする', isChecked: false },
   ]);    // ToDoリストの状態管理
+  const [time, setTime] = useState(""); // 追加！
 
   const handleAddSchedule = async (e) => {
     alert(`${selectedDate}のTODOリストに${e} の予定を追加しました！`);
@@ -156,8 +157,15 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
       alert("予定を入力してください");
       return;
     }
-    onAdd(content); // 親コンポーネントに予定内容を渡す
+    if (!time) {
+      alert("時間を指定してください");
+      return;
+    }
+
+    const adddata = {"content":content,"time":time,"isChecked":false}
+    onAdd(adddata); // 親コンポーネントに予定内容を渡す
     setContent(""); // 入力内容をリセット
+    setTime("");
     onClose(); // モーダルを閉じる
   };
 
@@ -233,6 +241,18 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
             }}
             rows="4"
             placeholder="予定内容を入力..."
+          />
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "10px",
+              marginBottom: "20px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+            }}
           />
 
           {/* ToDoを追加するボタン */}
