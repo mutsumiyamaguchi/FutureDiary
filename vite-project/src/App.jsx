@@ -3,6 +3,8 @@ import './App.css';
 import TodoList from './components/TODOList';'./components/TodoList';
 import Calendar from './components/Calendar';
 import DayDetailModal from './components/DayDetailModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [selectedDate, setSelectedDate] = useState('');
@@ -24,7 +26,8 @@ function App() {
 
 
   const handleAddSchedule = async (e) => {
-    alert(`${selectedDate}のTODOリストに${e.text} の予定を追加しました！`);
+    //alert(`${selectedDate}のTODOリストに${e.text} の予定を追加しました！`);
+    toast.success(`${selectedDate}のTODOに「${e.text}」を追加しました！`);
     fetchItems();
       // ここで送信
       await fetch(API_URL, {
@@ -115,7 +118,7 @@ function App() {
       {/* 🔽 TODO一覧表示をコンポーネント化！ */}
       <TodoList items={items} onEdit={handleEdit} onDelete={handleDelete} />
       <Calendar onDateClick={handleDateClick} />
-
+      <ToastContainer />
       {selectedDate && (
         <DayDetailModal
           date={selectedDate}
