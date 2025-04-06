@@ -191,7 +191,7 @@
 
 import React, { useState, useEffect } from "react";
 
-const DayDetailModal = ({ date, onClose, onAdd }) => {
+const DayDetailModal = ({ date, onClose, onAdd,OnDiaryEnter }) => {
   const [content, setContent] = useState("");  // 予定内容の入力内容を管理
   const [todos, setTodos] = useState([]);  // ToDoリストの状態管理
   const [time, setTime] = useState(""); // 時間入力
@@ -373,7 +373,18 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
             >
               閉じる
             </button>
-
+            <button
+              onClick={OnDiaryEnter}
+              style={{
+                padding: "10px 20px",
+                backgroundColor: "#007BFF",
+                color: "white",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+            >
+              日記
+            </button>
             <button
               onClick={handleAdd}
               style={{
