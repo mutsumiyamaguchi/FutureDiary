@@ -5,6 +5,7 @@ const admin = require('firebase-admin');
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
 const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore');
 const ServiceAccount = require('./ServiceAccount.json');
+const { time } = require("console");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,7 +34,7 @@ app.get('/items', async (req, res) => {
     }
 
     snapshot.forEach(doc => {
-      console.log(doc.id, '=>', doc.data());
+      console.log("GET " + doc.id, '=>', doc.data());
       items.push(doc.data());
     });
 
@@ -47,7 +48,7 @@ app.get('/items', async (req, res) => {
 /**スケジュールを追加するAPI*/
 app.post('/items', async (req, res) => {
   // データの定義場所
-  const { id, name,A } = req.body;
+  const { id, day,IsCheacked,name,Time } = req.body;
   items.push(req.body);
   try {
     // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
@@ -56,7 +57,9 @@ app.post('/items', async (req, res) => {
     const setAda = await docRef.set({
       id  : id,
       date: day,
+      IsCheacked: day,
       name: name,
+      Time : Time,
     });
     res.json({ message: '登録完了', items });
     console.log("登録しました " + name)
@@ -70,7 +73,7 @@ app.post('/items', async (req, res) => {
 app.put('/items/:id', async (req, res) => {
   // データの定義場所
   const { id } = req.params;
-  const { name } = req.body;  // データ本体
+  const { day,IsCheacked,name,Time } = req.body;  // データ本体
   try {
     // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
     const day = new Date().toLocaleDateString('sv-SE')
@@ -78,7 +81,9 @@ app.put('/items/:id', async (req, res) => {
     const setAda = await docRef.set({
       id  : id,
       date: day,
+      IsCheacked: day,
       name: name,
+      Time : Time,
     });
     res.json({ message: '更新完了', items });
     console.log("更新しました " + name)
