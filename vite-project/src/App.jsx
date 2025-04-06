@@ -48,7 +48,19 @@ function App() {
     const res1 = await fetch(API_URL + '/GetIsCheckedList');
     console.log("DateFilter")
     const res2 = await fetch(`${API_URL}?date=2025-04-06`);
-    const data = await res.json();
+    let data = await res.json();
+    data.sort((a, b) => {
+      const dateA = a.date || "9999-99-99";
+      const dateB = b.date || "9999-99-99";
+      const timeA = a.Time && a.Time.match(/^\d{2}:\d{2}$/) ? a.Time : "99:99";
+      const timeB = b.Time && b.Time.match(/^\d{2}:\d{2}$/) ? b.Time : "99:99";
+    
+      const dateCompare = dateA.localeCompare(dateB);
+      if (dateCompare !== 0) return dateCompare;
+    
+      return timeA.localeCompare(timeB);
+    });
+    
     setItems(data);
   };
 
