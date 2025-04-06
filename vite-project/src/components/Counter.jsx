@@ -109,21 +109,21 @@ const Counter = () => {
             }}
           />
         </div>
-        <p>{Math.round(progress)}% Complete</p>
+        <p>{Math.round(progress)}% 完了</p>
       </div>
 
       {/* レベル表示 */}
       <div style={{ marginTop: "20px" }}>
         <h2>Level: {level}</h2>
         <p>
-          Tasks completed for next level: {isCheckedList.length} / {nextLevelTasks}
+          次のレベルまでに完了すべきタスク数: {isCheckedList.length} / {nextLevelTasks}
         </p>
       </div>
-      <div>
+      {/* <div>
         {isCheckedList.map((item, index) => (
           <div key={index}>{String(item)}</div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
