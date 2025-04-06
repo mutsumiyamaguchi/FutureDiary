@@ -206,9 +206,11 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
       console.log("thsi",data[0])
       data = data.map((element)=>{
         let resdata={
+          "id":element.id,
           "text":element.name,
-          "isChecked":element.isChecked,
-          "time":element.Time
+          "isChecked":element.IsChecked,
+          "time":element.Time,
+          "date":element.date
         }
         return resdata
       })
@@ -250,13 +252,37 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
     onClose();      // モーダルを閉じる
   };
 
-  const handleCheckboxChange = (index) => {
+  const handleCheckboxChange = async(index) => {
     const updatedTodos = [...todos];
     updatedTodos[index].isChecked = !updatedTodos[index].isChecked;
 
     // チェック状態更新後にソートも適用（状態自体を並び替え）
     const sortedTodos = updatedTodos.sort((a, b) => a.time.localeCompare(b.time));
     setTodos(sortedTodos);
+
+    console.log("this is kakuninn",updatedTodos[index])
+    
+    try {
+      const updatedData = {
+          "id": updatedTodos[index].id,
+          "date": updatedTodos[index].date,
+          "IsChecked":updatedTodos[index].isChecked,
+          "name": updatedTodos[index].text,
+          "Time": updatedTodos[index].time
+      };
+  
+      await fetch(`${API_URL}/${updatedTodos[index].id}`, {
+        method: "PUT", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData), // 更新したデータを送信
+      });
+  
+      console.log("データが更新されました", updatedData);
+    } catch (error) {
+      console.error("データの更新に失敗しました", error);
+    }
   };
 
   return (
