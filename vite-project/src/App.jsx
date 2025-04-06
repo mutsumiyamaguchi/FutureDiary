@@ -14,34 +14,32 @@ function App() {
     let data
     if(name == "")
     {
-      const res = await fetch(`${API_URL}`);
-      console.log("DateFilter")
-      data = await res.json();    
+      await fetchItems();
+      toast.info(`全ての予定を表示しました`);
+      return
     }else{
       const res = await fetch(`${API_URL}?name=${name}`);
       console.log("DateFilter")
       data = await res.json();
+      data.sort((a, b) => {
+        const dateA = a.date || "9999-99-99";
+        const dateB = b.date || "9999-99-99";
+        const timeA = a.Time && a.Time.match(/^\d{2}:\d{2}$/) ? a.Time : "99:99";
+        const timeB = b.Time && b.Time.match(/^\d{2}:\d{2}$/) ? b.Time : "99:99";
+      
+        const dateCompare = dateA.localeCompare(dateB);
+        if (dateCompare !== 0) return dateCompare;
+      
+        return timeA.localeCompare(timeB);
+      });
+      setItems(data);
     }
-    data.sort((a, b) => {
-      const dateA = a.date || "9999-99-99";
-      const dateB = b.date || "9999-99-99";
-      const timeA = a.Time && a.Time.match(/^\d{2}:\d{2}$/) ? a.Time : "99:99";
-      const timeB = b.Time && b.Time.match(/^\d{2}:\d{2}$/) ? b.Time : "99:99";
-    
-      const dateCompare = dateA.localeCompare(dateB);
-      if (dateCompare !== 0) return dateCompare;
-    
-      return timeA.localeCompare(timeB);
-    });
-    setItems(data);
     if(data.length == 0)
     {
       toast.warn(`「${name}」を含む予定は見つかりませんでした`);
     }else{
-      if(name == '')
+      if(name != '')
       {
-        toast.info(`全ての予定を表示しました`);
-      }else{
         toast.info(`「${name}」を含む予定が${data.length}件見つかりました`);
       }
     }
