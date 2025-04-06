@@ -88,7 +88,7 @@ function TodoList({ items, onEdit, onDelete,onToggleCheck }) {
           <li key={item.id} className="todo-item">
             <div className="todo-content">
               <label>
-                <input type="checkbox" checked={item.IsCheacked}  onChange={() => onToggleCheck(item)}/>
+                <input type="checkbox" checked={item.IsChecked}  onChange={() => onToggleCheck(item)}/>
                 <span style={{ textDecoration: item.IsCheacked ? 'line-through' : 'none' }}>
                   {item.name}
                 </span>
