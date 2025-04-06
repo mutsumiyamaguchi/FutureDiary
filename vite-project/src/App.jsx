@@ -3,11 +3,49 @@ import './App.css';
 import TodoList from './components/TODOList';'./components/TodoList';
 import Calendar from './components/Calendar';
 import DayDetailModal from './components/DayDetailModal';
+import SearchForm from './components/SearchForm';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [selectedDate, setSelectedDate] = useState('');
+
+  const SearchSchedule = async (name) => {
+    let data
+    if(name == "")
+    {
+      const res = await fetch(`${API_URL}`);
+      console.log("DateFilter")
+      data = await res.json();    
+    }else{
+      const res = await fetch(`${API_URL}?name=${name}`);
+      console.log("DateFilter")
+      data = await res.json();
+    }
+    data.sort((a, b) => {
+      const dateA = a.date || "9999-99-99";
+      const dateB = b.date || "9999-99-99";
+      const timeA = a.Time && a.Time.match(/^\d{2}:\d{2}$/) ? a.Time : "99:99";
+      const timeB = b.Time && b.Time.match(/^\d{2}:\d{2}$/) ? b.Time : "99:99";
+    
+      const dateCompare = dateA.localeCompare(dateB);
+      if (dateCompare !== 0) return dateCompare;
+    
+      return timeA.localeCompare(timeB);
+    });
+    setItems(data);
+    if(data.length == 0)
+    {
+      toast.warn(`「${name}」の予定は見つかりませんでした`);
+    }else{
+      if(name == '')
+      {
+        toast.info(`全ての予定を表示しました`);
+      }else{
+        toast.info(`「${name}」から始まる予定が${data.length}件見つかりました`);
+      }
+    }
+  };
 
   const handleDateClick = (date) => {
     setSelectedDate(date); // ← カレンダーから渡された日付
@@ -42,7 +80,7 @@ function App() {
 
   const API_URL = 'http://localhost:5000/items';
 
-  // 送信するデータを定義する変数
+  // カレンダーを取得する関数
   const fetchItems = async () => {
     const res = await fetch(API_URL);
     console.log("DateFilter")
@@ -90,8 +128,9 @@ function App() {
     </div>
       {/* 🔽 TODO一覧表示をコンポーネント化！ */}
       <TodoList items={items} onEdit={handleEdit} onDelete={handleDelete} />
+      <SearchForm onSearch={SearchSchedule}/>
       <Calendar onDateClick={handleDateClick} />
-      <ToastContainer />
+      <ToastContainer/>
       {selectedDate && (
         <DayDetailModal
           date={selectedDate}
