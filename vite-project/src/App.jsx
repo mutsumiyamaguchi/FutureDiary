@@ -56,34 +56,6 @@ function App() {
     fetchItems();
   }, []);
 
-  // 入力しデータをAPIに送信する関数
-  const handleSubmit = async (e) => {
-    //e.preventDefault();   // 送信後にリロードしない処理
-    if (editId) {
-      // ここで編集
-      await fetch(`${API_URL}/${editId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        // 実際に送受信するデータ
-        body: JSON.stringify({ name,date,IsCheacked,Time }),
-      });
-      setEditId(null);
-    } else {
-      // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
-      const day = new Date().toLocaleDateString('sv-SE')
-      // ここで取得
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        // 実際に送受信するデータ
-        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,IsCheacked : false,name: e,Time: "--:--"}),
-      });
-    }
-    setName('');
-    fetchItems();
-    console.log("送信済")
-  };
-
   // 削除ボタンのハンドラ
   const handleDelete = async (id) => {
     await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
@@ -105,15 +77,6 @@ function App() {
     <>
        <div style={{ padding: '2rem' }}>
       <h1>フューチャーダイアリー</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="タスク名を入力"
-          required
-        />
-        <button type="submit">{editId ? '更新' : '登録'}</button>
-      </form>
     </div>
       {/* 🔽 TODO一覧表示をコンポーネント化！ */}
       <TodoList items={items} onEdit={handleEdit} onDelete={handleDelete} />
