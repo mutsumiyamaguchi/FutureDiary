@@ -1,0 +1,81 @@
+.todo-wrapper {
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-top: 2px solid #ccc;
+  }
+  
+  .todo-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .todo-list li {
+    background: #fff;
+    margin-bottom: 10px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .todo-list li.done {
+    text-decoration: line-through;
+    color: #999;
+  }
+  
+  .Search {
+    background-color: #f9f9f9;
+    color: 333;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+
+  .Search a {
+    margin: 9px;
+  }
+
+  .dli-search {
+    display: inline-block;
+    vertical-align: middle;
+    color: #333;
+    line-height: 1;
+    width: 0.7em;
+    height: 0.7em;
+    border: 0.1em solid currentColor;
+    border-radius: 50%;
+    margin-bottom: 6px;
+    box-sizing: content-box;
+    position: relative;
+  }
+  
+  .dli-search::before {
+    content: '';
+    position: absolute;
+    top: calc(85.35534% + 0.07071em);
+    left: calc(85.35534% + 0.07071em);
+    width: 0.336em;
+    height: 0.1em;
+    background: currentColor;
+    border-radius: 0 0.1em 0.1em 0;
+    transform: translateY(-50%) rotate(45deg);
+    transform-origin: left center;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  .todo-list li button:hover {
+    background-color: #cc0000;
+  }
+  
