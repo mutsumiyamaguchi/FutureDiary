@@ -70,6 +70,18 @@ function App() {
   const [IsCheacked, setCheack] = useState(false);
   const [Time, setTime] = useState('');
   const [editId, setEditId] = useState(null);
+  
+  
+  const [tasks, setTasks] = useState([]);
+
+  // counter douki yamaguchi
+  const toggleCompletion = (id, isChecked) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, completed: isChecked } : task
+      )
+    );
+  };
 
 
   const handleAddSchedule = async (e) => {
@@ -160,7 +172,7 @@ function App() {
           date={selectedDate}
           onClose={handleCloseModal}
           onAdd={handleAddSchedule}
-          OnDiaryEnter={handleOpenDiaryModal}
+          onToggleCompletion={toggleCompletion}
         />
       )}
       {selectedDiary && (
