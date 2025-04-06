@@ -21,14 +21,14 @@ function App() {
 
   
   const handleAddSchedule = async (e) => {
-    alert(`${selectedDate}のTODOリストに${e} の予定を追加しました！`);
+    alert(`${selectedDate}のTODOリストに${e.content} の予定を追加しました！`);
     fetchItems();
       // ここで送信
       await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // 実際に送受信するデータ
-        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,name: e,A : "好きな生年月日" }),
+        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,IsChecked:e.isChecked,name: e.content,Time: e.time }),
       });
     console.log("送信済")
     setSelectedDate(null);
