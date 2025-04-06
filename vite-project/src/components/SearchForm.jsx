@@ -22,7 +22,7 @@ const SearchForm = ({ onSearch }) => {
   };
    return (
      <div style={{ padding: "20px" }}>
-       <h1>Todo List</h1>
+       <h1>TODO Search</h1>
        <from onSubmit={handleSubmit}>
        <input
          type="text"

@@ -39,6 +39,16 @@ import './TodoList.css';
 function TodoList({ items, onEdit, onDelete }) {
   const [remainingTimes, setRemainingTimes] = useState({});
 
+  // 今日の日付を "2025年4月5日(土)" の形式で取得
+  const today = (() => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1; // 0-indexed
+    const date = now.getDate();
+    const weekday = now.toLocaleDateString('ja-JP', { weekday: 'short' }); // 例: "(土)"
+    return `${year}年${month}月${date}日(${weekday})`;
+  })();
+
   // 残り時間を計算する関数
   const getTimeRemaining = (dateStr, timeStr) => {
     if (!dateStr || !timeStr || !/^\d{2}:\d{2}$/.test(timeStr)) return '';
@@ -72,7 +82,7 @@ function TodoList({ items, onEdit, onDelete }) {
 
   return (
     <div className="todo-wrapper">
-      <h2>📝 ToDoリスト</h2>
+      <h2>📝 {today}のTODOリスト</h2>
       <ul className="todo-list">
         {items.map((item) => (
           <li key={item.id} className="todo-item">
