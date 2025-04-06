@@ -47,8 +47,9 @@ function App() {
     const res = await fetch(API_URL);
     const res1 = await fetch(API_URL + '/GetIsCheckedList');
     console.log("DateFilter")
-    const res2 = await fetch(`${API_URL}?date=2025-04-06`);
-    let data = await res.json();
+    const today = new Date().toISOString().split('T')[0]; 
+    const res2 = await fetch(`${API_URL}?date=${today}`);
+    let data = await res2.json();
     data.sort((a, b) => {
       const dateA = a.date || "9999-99-99";
       const dateB = b.date || "9999-99-99";
