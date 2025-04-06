@@ -84,7 +84,9 @@ function App() {
   const fetchItems = async () => {
     const res = await fetch(API_URL);
     console.log("DateFilter")
-    let data = await res.json();
+    const today = new Date().toISOString().split('T')[0]; 
+    const res2 = await fetch(`${API_URL}?date=${today}`);
+    let data = await res2.json();
     data.sort((a, b) => {
       const dateA = a.date || "9999-99-99";
       const dateB = b.date || "9999-99-99";
