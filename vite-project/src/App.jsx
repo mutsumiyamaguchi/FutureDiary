@@ -45,9 +45,7 @@ function App() {
   // 送信するデータを定義する変数
   const fetchItems = async () => {
     const res = await fetch(API_URL);
-    const res1 = await fetch(API_URL + '/GetIsCheckedList');
     console.log("DateFilter")
-    const res2 = await fetch(`${API_URL}?date=2025-04-06`);
     let data = await res.json();
     data.sort((a, b) => {
       const dateA = a.date || "9999-99-99";
