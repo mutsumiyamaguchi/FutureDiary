@@ -2,7 +2,6 @@
 // import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 // import interactionPlugin from "@fullcalendar/interaction" // needed for dayClick
 
-
 // export default function Calendar() {
 //     const handleDateClick = (arg) => {
 //         console.log("this is arg.dateStr",arg.dateStr)
@@ -17,9 +16,9 @@
 //   )
 // }
 
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 
 export default function Calendar({ onDateClick }) {
   const handleDateClick = (arg) => {
@@ -30,11 +29,13 @@ export default function Calendar({ onDateClick }) {
   };
 
   return (
-    <FullCalendar
-      plugins={[dayGridPlugin, interactionPlugin]}
-      initialView="dayGridMonth"
-      dateClick={handleDateClick}
-    />
+    <>
+      <Counter />
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        dateClick={handleDateClick}
+      />
+    </>
   );
 }
-
