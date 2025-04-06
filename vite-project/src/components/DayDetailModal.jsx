@@ -124,6 +124,33 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
     { text: '掃除をする', isChecked: false },
   ]);    // ToDoリストの状態管理
 
+  const handleAddSchedule = async (e) => {
+    alert(`${selectedDate}のTODOリストに${e} の予定を追加しました！`);
+    fetchItems();
+      // ここで送信
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        // 実際に送受信するデータ
+        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,name: e,A : "好きな生年月日" }),
+      });
+    console.log("送信済")
+    setSelectedDate(null);
+  };
+
+  const API_URL = 'http://localhost:5000/items';
+
+  // 送信するデータを定義する変数
+  const fetchItems = async () => {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    setItems(data);
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
   const handleAdd = () => {
     if (!content.trim()) {
       alert("予定を入力してください");

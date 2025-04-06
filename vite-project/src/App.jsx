@@ -19,6 +19,7 @@ function App() {
   const [name, setName] = useState('');
   const [editId, setEditId] = useState(null);
 
+  
   const handleAddSchedule = async (e) => {
     alert(`${selectedDate}のTODOリストに${e} の予定を追加しました！`);
     fetchItems();
@@ -27,7 +28,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // 実際に送受信するデータ
-        body: JSON.stringify({ id: Date.now().toString(), name: e,A : "好きな生年月日" }),
+        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,name: e,A : "好きな生年月日" }),
       });
     console.log("送信済")
     setSelectedDate(null);
