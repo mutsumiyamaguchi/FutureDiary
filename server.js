@@ -48,16 +48,14 @@ app.get('/items', async (req, res) => {
 /**スケジュールを追加するAPI*/
 app.post('/items', async (req, res) => {
   // データの定義場所
-  const { id, day,IsCheacked,name,Time } = req.body;
+  const { id, date,IsCheacked,name,Time } = req.body;
   items.push(req.body);
   try {
-    // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
-    const day = new Date().toLocaleDateString('sv-SE')
     const docRef = db.collection(ScheduleCollection).doc(id);
     const setAda = await docRef.set({
       id  : id,
-      date: day,
-      IsCheacked: day,
+      date: date,
+      IsCheacked: IsCheacked,
       name: name,
       Time : Time,
     });
@@ -65,7 +63,7 @@ app.post('/items', async (req, res) => {
     console.log("登録しました " + name)
   } catch (error) {
     console.error('Error registering documents:', error);
-    res.status(500).json({ error: '六に失敗しました' });
+    res.status(500).json({ error: '登録に失敗しました' });
   }
 });
 
@@ -73,15 +71,15 @@ app.post('/items', async (req, res) => {
 app.put('/items/:id', async (req, res) => {
   // データの定義場所
   const { id } = req.params;
-  const { day,IsCheacked,name,Time } = req.body;  // データ本体
+  const { date,IsCheacked,name,Time } = req.body;  // データ本体
   try {
     // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
     const day = new Date().toLocaleDateString('sv-SE')
     const docRef = db.collection(ScheduleCollection).doc(id);
     const setAda = await docRef.set({
       id  : id,
-      date: day,
-      IsCheacked: day,
+      date: date,
+      IsCheacked: IsCheacked,
       name: name,
       Time : Time,
     });
