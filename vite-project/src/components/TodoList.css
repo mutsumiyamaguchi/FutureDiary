@@ -4,11 +4,6 @@
     border-top: 2px solid #ccc;
   }
   
-  .todo-list {
-    list-style: none;
-    padding: 0;
-  }
-  
   .todo-list li {
     background: #fff;
     margin-bottom: 10px;
@@ -36,5 +31,28 @@
   
   .todo-list li button:hover {
     background-color: #cc0000;
+  }
+  
+
+
+  .todo-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .todo-content {
+    flex: 1;
+  }
+  
+  .todo-actions button {
+    margin-left: 0.5rem;
   }
   
