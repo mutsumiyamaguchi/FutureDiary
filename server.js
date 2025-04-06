@@ -13,6 +13,7 @@ admin.initializeApp({ credential: admin.credential.cert(ServiceAccount) });
 
 const db = getFirestore();
 const ScheduleCollection = 'schedules'  // スケジュールDB名
+const DiaryCollection = 'diary'         // ダイアリーDB名
 
 // ミドルウェア
 app.use(cors());
@@ -154,6 +155,73 @@ app.delete('/items/:id', async (req, res) => {
   } catch (error) {
     console.error('Error removeing documents:', error);
     res.status(500).json({ error: '削除に失敗しました' });
+  }
+});
+
+/**日記を追加するAPI*/
+app.post('/items/Diary', async (req, res) => {
+  // データの定義場所
+  const { id, date,text } = req.body;
+  items.push(req.body);
+  try {
+    const docRef = db.collection(DiaryCollection).doc(id);
+    const setAda = await docRef.set({
+      id  : id,
+      date: date,
+      text: text,
+    });
+    res.json({ message: '登録完了', items });
+    console.log("登録しました " + text)
+  } catch (error) {
+    console.error('Error registering documents:', error);
+    res.status(500).json({ error: '登録に失敗しました' });
+  }
+});
+
+/**日記を取得するAPI*/
+app.get('/items/Diary', async (req, res) => {
+  const { date,name,month } = req.query;  // クエリパラメータから日付を取得
+  items = [];
+  try {
+    const itemsRef = db.collection(DiaryCollection);
+    let snapshot;
+    /*日付で絞り込んだスケジュールを取得する*/
+    if(date)
+    {
+      snapshot = await itemsRef.where("date", "==", date).get();
+    }else{
+      return res.error('ERROR:Please Enter Date');
+    }
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return res.json([]);
+    }
+
+    snapshot.forEach(doc => {
+      /*取得したデータを絞り込む*/
+      if(month)
+      {
+        /*指定した月のデータを絞り込む*/
+        let result = doc.get('date').split("-");
+        if(month != result[1])
+        {
+          return;
+        }
+      }
+      if(name)
+      {
+        if (!doc.get('name').includes(name)) {
+          return;
+        }
+      }
+      console.log("GET " + doc.id, '=>', doc.data());
+      items.push(doc.data());
+    });
+
+    res.json(items);
+  } catch (error) {
+    console.error('Error getting documents:', error);
+    res.status(500).json({ error: 'データ取得に失敗しました' });
   }
 });
 

@@ -172,6 +172,7 @@ function App() {
           date={selectedDate}
           onClose={handleCloseModal}
           onAdd={handleAddSchedule}
+          OnDiaryEnter={handleOpenDiaryModal}
           onToggleCompletion={toggleCompletion}
         />
       )}
