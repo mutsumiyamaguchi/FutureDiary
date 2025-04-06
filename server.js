@@ -29,18 +29,8 @@ app.get('/items', async (req, res) => {
     const itemsRef = db.collection(ScheduleCollection);
     let q;
     let snapshot;
-    /*名前と日付両方で絞り込んだスケジュールを取得する*/
-    if(date && name)
-    {
-      snapshot = await itemsRef.where("date", "==", date).orderBy("name").startAt(name).endAt(name + "\uf8ff").get();
-    }
-    /*名前で絞り込んだスケジュールを取得する*/
-    else if(name)
-    {
-      snapshot = await itemsRef.orderBy("name").startAt(name).endAt(name + "\uf8ff").get();
-    }
     /*日付で絞り込んだスケジュールを取得する*/
-    else if(date)
+    if(date)
     {
       snapshot = await itemsRef.where("date", "==", date).get();
     }else{
@@ -52,12 +42,19 @@ app.get('/items', async (req, res) => {
     }
 
     snapshot.forEach(doc => {
+      /*取得したデータを絞り込む*/
       if(month)
       {
-        // その月の予定を取得する
+        /*指定した月のデータを絞り込む*/
         let result = doc.get('date').split("-");
         if(month != result[1])
         {
+          return;
+        }
+      }
+      if(name)
+      {
+        if (!doc.get('name').includes(name)) {
           return;
         }
       }

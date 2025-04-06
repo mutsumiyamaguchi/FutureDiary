@@ -36,13 +36,13 @@ function App() {
     setItems(data);
     if(data.length == 0)
     {
-      toast.warn(`「${name}」の予定は見つかりませんでした`);
+      toast.warn(`「${name}」を含む予定は見つかりませんでした`);
     }else{
       if(name == '')
       {
         toast.info(`全ての予定を表示しました`);
       }else{
-        toast.info(`「${name}」から始まる予定が${data.length}件見つかりました`);
+        toast.info(`「${name}」を含む予定が${data.length}件見つかりました`);
       }
     }
   };
