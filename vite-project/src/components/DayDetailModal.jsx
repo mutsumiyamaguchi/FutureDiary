@@ -119,9 +119,9 @@ import React, { useState, useEffect } from "react";
 const DayDetailModal = ({ date, onClose, onAdd }) => {
   const [content, setContent] = useState("");  // 予定内容の入力内容を管理
   const [todos, setTodos] = useState([
-    { text: '買い物に行く', isChecked: false },
-    { text: '洗濯をする', isChecked: false },
-    { text: '掃除をする', isChecked: false },
+    { text: '買い物に行く', isChecked: false ,time:"09:00"},
+    { text: '洗濯をする', isChecked: false ,time:"11:00"},
+    { text: '掃除をする', isChecked: false ,time:"11:45"},
   ]);    // ToDoリストの状態管理
   const [time, setTime] = useState(""); // 追加！
 
@@ -162,7 +162,7 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
       return;
     }
 
-    const adddata = {"content":content,"time":time,"isChecked":false}
+    const adddata = {"text":content,"time":time,"isChecked":false}
     onAdd(adddata); // 親コンポーネントに予定内容を渡す
     setContent(""); // 入力内容をリセット
     setTime("");
@@ -174,14 +174,21 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
       alert("ToDo内容を入力してください");
       return;
     }
-    setTodos([...todos, { text: content, isChecked: false }]); // 新しいToDoを追加
+    setTodos([...todos, { text: content, isChecked: false,time }]); // 新しいToDoを追加
+    const sortedTodos = newTodos.sort((a, b) => a.time.localeCompare(b.time));
+    setTodos(sortedTodos); // 並び替えた状態で保存
     setContent(""); // 入力内容をリセット
+    setTime("")
   };
 
   const handleCheckboxChange = (index) => {
     const updatedTodos = [...todos];
     updatedTodos[index].isChecked = !updatedTodos[index].isChecked;
-    setTodos(updatedTodos); // チェック状態を更新
+
+    // チェック状態更新後にソートも適用（状態自体を並び替え）
+    const sortedTodos = updatedTodos.sort((a, b) => a.time.localeCompare(b.time));
+    setTodos(sortedTodos);
+    // setTodos(updatedTodos); // チェック状態を更新
   };
 
   return (
@@ -206,7 +213,10 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
           <div className="todolist">
             <h3>To-Do List</h3>
             <ul style={{ listStyleType: "none", padding: 0 }}>
-              {todos.map((todo, index) => (
+              {todos
+              .slice() // 元の配列を破壊しないようにコピー
+              .sort((a, b) => a.time.localeCompare(b.time)) // 時間を文字列としてソート
+              .map((todo, index) => (
                 <li key={index} style={{ display: "flex", alignItems: "center" }}>
                   <input
                     type="checkbox"
@@ -219,7 +229,7 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
                       textDecoration: todo.isChecked ? "line-through" : "none",
                     }}
                   >
-                    {todo.text}
+                    {todo.time} {todo.text}
                   </span>
                 </li>
               ))}
