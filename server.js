@@ -23,14 +23,24 @@ let items = [];
 
 /**スケジュールを取得するAPI*/
 app.get('/items', async (req, res) => {
-  const { date } = req.query;  // クエリパラメータから日付を取得
+  const { date,name,month } = req.query;  // クエリパラメータから日付を取得
   items = [];
   try {
     const itemsRef = db.collection(ScheduleCollection);
     let q;
     let snapshot;
-    /*その日で絞り込んだスケジュールを取得する*/
-    if(date)
+    /*名前と日付両方で絞り込んだスケジュールを取得する*/
+    if(date && name)
+    {
+      snapshot = await itemsRef.where("date", "==", date).orderBy("name").startAt(name).endAt(name + "\uf8ff").get();
+    }
+    /*名前で絞り込んだスケジュールを取得する*/
+    else if(name)
+    {
+      snapshot = await itemsRef.orderBy("name").startAt(name).endAt(name + "\uf8ff").get();
+    }
+    /*日付で絞り込んだスケジュールを取得する*/
+    else if(date)
     {
       snapshot = await itemsRef.where("date", "==", date).get();
     }else{
@@ -42,6 +52,15 @@ app.get('/items', async (req, res) => {
     }
 
     snapshot.forEach(doc => {
+      if(month)
+      {
+        // その月の予定を取得する
+        let result = doc.get('date').split("-");
+        if(month != result[1])
+        {
+          return;
+        }
+      }
       console.log("GET " + doc.id, '=>', doc.data());
       items.push(doc.data());
     });
