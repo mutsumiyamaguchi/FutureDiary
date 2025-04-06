@@ -126,7 +126,6 @@ app.put('/items/:id', async (req, res) => {
   const { date,IsChecked,name,Time } = req.body;  // データ本体
   try {
     // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
-    const day = new Date().toLocaleDateString('sv-SE')
     const docRef = db.collection(ScheduleCollection).doc(id);
     const setAda = await docRef.set({
       id  : id,
@@ -178,6 +177,27 @@ app.post('/items/Diary', async (req, res) => {
   }
 });
 
+/**日記を更新するAPI*/
+app.put('/items/Diary/:id', async (req, res) => {
+  // データの定義場所
+  const { id, date,text } = req.body;
+  items.push(req.body);
+  try {
+    const docRef = db.collection(DiaryCollection).doc(id);
+    const setAda = await docRef.set({
+      id  : id,
+      date: date,
+      text: text,
+    });
+    res.json({ message: '更新完了', items });
+    console.log("更新しました " + name)
+  } catch (error) {
+    console.error('Error updating documents:', error);
+    res.status(500).json({ error: '更新に失敗しました' });
+  }
+});
+
+
 /**日記を取得するAPI*/
 app.get('/items/Diary', async (req, res) => {
   const { date,name,month } = req.query;  // クエリパラメータから日付を取得
@@ -214,7 +234,7 @@ app.get('/items/Diary', async (req, res) => {
           return;
         }
       }
-      console.log("GET " + doc.id, '=>', doc.data());
+      console.log("Diary GET " + doc.id, '=>', doc.data());
       items.push(doc.data());
     });
 
