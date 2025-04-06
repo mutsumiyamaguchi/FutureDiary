@@ -126,7 +126,7 @@ const DayDetailModal = ({ date, onClose, onAdd }) => {
   const [time, setTime] = useState(""); // 追加！
 
   const handleAddSchedule = async (e) => {
-    alert(`${selectedDate}のTODOリストに${e} の予定を追加しました！`);
+    alert(`${selectedDate}のTODOリストに${e}を追加しました！`);
     fetchItems();
       // ここで送信
       await fetch(API_URL, {
