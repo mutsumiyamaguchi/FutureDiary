@@ -17,9 +17,12 @@ function App() {
 
   const [items, setItems] = useState([]);
   const [name, setName] = useState('');
+  const [date, setDate] = useState('');
+  const [IsCheacked, setCheack] = useState(false);
+  const [Time, setTime] = useState('');
   const [editId, setEditId] = useState(null);
 
-  
+
   const handleAddSchedule = async (e) => {
     alert(`${selectedDate}のTODOリストに${e.content} の予定を追加しました！`);
     fetchItems();
@@ -56,16 +59,18 @@ function App() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         // 実際に送受信するデータ
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name,date,IsCheacked,Time }),
       });
       setEditId(null);
     } else {
+      // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
+      const day = new Date().toLocaleDateString('sv-SE')
       // ここで取得
       await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // 実際に送受信するデータ
-        body: JSON.stringify({ id: Date.now().toString(), name }),
+        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,IsCheacked : false,name: e,Time: "--:--"}),
       });
     }
     setName('');
@@ -83,6 +88,9 @@ function App() {
   // 編集ボタンのハンドラ
   const handleEdit = (item) => {
     setName(item.name);
+    setDate(item.date);
+    setCheack(item.IsCheacked);
+    setTime(item.Time);
     setEditId(item.id);
   };
 
