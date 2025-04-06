@@ -36,7 +36,7 @@
 import { useEffect, useState } from 'react';
 import './TodoList.css';
 
-function TodoList({ items, onEdit, onDelete }) {
+function TodoList({ items, onEdit, onDelete,onToggleCheck }) {
   const [remainingTimes, setRemainingTimes] = useState({});
 
   // 今日の日付を "2025年4月5日(土)" の形式で取得
@@ -88,7 +88,7 @@ function TodoList({ items, onEdit, onDelete }) {
           <li key={item.id} className="todo-item">
             <div className="todo-content">
               <label>
-                <input type="checkbox" checked={item.IsCheacked} readOnly />
+                <input type="checkbox" checked={item.IsCheacked}  onChange={() => onToggleCheck(item)}/>
                 <span style={{ textDecoration: item.IsCheacked ? 'line-through' : 'none' }}>
                   {item.name}
                 </span>

@@ -83,6 +83,22 @@ function App() {
     );
   };
 
+  const handleToggleCheck = async (item) => {
+    const updatedItem = { ...item, IsCheacked: !item.IsCheacked };
+
+    console.log("this is updateitem",updatedItem)
+    updatedItem.IsChecked = !updatedItem.IsChecked
+  
+    await fetch(`${API_URL}/${updatedItem.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedItem),
+    });
+  
+    fetchItems();
+  };
+  
+
 
   const handleAddSchedule = async (e) => {
     toast.success(`${selectedDate}のTODOに「${e.text}」を追加しました！`);
@@ -173,7 +189,7 @@ function App() {
       <h1>FutureDiary</h1>
     </div>
       {/* 🔽 TODO一覧表示をコンポーネント化！ */}
-      <TodoList items={items} onEdit={handleEdit} onDelete={handleDelete} />
+      <TodoList items={items} onEdit={handleEdit} onDelete={handleDelete} onToggleCheck={handleToggleCheck}/>
       <SearchForm onSearch={SearchSchedule}/>
       <Calendar onDateClick={handleDateClick} />
       <ToastContainer/>
