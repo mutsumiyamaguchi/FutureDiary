@@ -42,6 +42,7 @@ function App() {
   // 送信するデータを定義する変数
   const fetchItems = async () => {
     const res = await fetch(API_URL);
+    const res1 = await fetch(API_URL + '/GetIsCheckedList');
     const data = await res.json();
     setItems(data);
   };

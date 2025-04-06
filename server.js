@@ -45,17 +45,44 @@ app.get('/items', async (req, res) => {
   }
 });
 
+/**IsCheckedの状態を配列で取得するAPI*/
+app.get('/items/GetIsCheckedList', async (req, res) => {
+  items = [];
+  IsChecked = [];
+  try {
+    const itemsRef = db.collection(ScheduleCollection);
+    const snapshot = await itemsRef.get();
+
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return res.json([]);
+    }
+    // 取得した全データに処理を行う
+    snapshot.forEach(doc => {
+      console.log("GET " + doc.id, '=>', doc.get('IsChecked'));
+      items.push(doc.get('IsChecked'));
+    });
+
+    console.log(items);
+    // リストを格納
+    res.json(items);
+  } catch (error) {
+    console.error('Error getting documents:', error);
+    res.status(500).json({ error: 'データ取得に失敗しました' });
+  }
+});
+
 /**スケジュールを追加するAPI*/
 app.post('/items', async (req, res) => {
   // データの定義場所
-  const { id, date,IsCheacked,name,Time } = req.body;
+  const { id, date,IsChecked,name,Time } = req.body;
   items.push(req.body);
   try {
     const docRef = db.collection(ScheduleCollection).doc(id);
     const setAda = await docRef.set({
       id  : id,
       date: date,
-      IsCheacked: IsCheacked,
+      IsChecked: IsChecked,
       name: name,
       Time : Time,
     });
@@ -71,7 +98,7 @@ app.post('/items', async (req, res) => {
 app.put('/items/:id', async (req, res) => {
   // データの定義場所
   const { id } = req.params;
-  const { date,IsCheacked,name,Time } = req.body;  // データ本体
+  const { date,IsChecked,name,Time } = req.body;  // データ本体
   try {
     // sv-SEロケールはYYYY-MM-DD形式の日付文字列を戻す
     const day = new Date().toLocaleDateString('sv-SE')
@@ -79,7 +106,7 @@ app.put('/items/:id', async (req, res) => {
     const setAda = await docRef.set({
       id  : id,
       date: date,
-      IsCheacked: IsCheacked,
+      IsChecked: IsChecked,
       name: name,
       Time : Time,
     });
