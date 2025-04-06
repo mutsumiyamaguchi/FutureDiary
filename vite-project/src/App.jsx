@@ -16,7 +16,6 @@ function App() {
     {
       await fetchItems();
       toast.info(`全ての予定を表示しました`);
-      return
     }else{
       const res = await fetch(`${API_URL}?name=${name}`);
       console.log("DateFilter")
@@ -34,13 +33,16 @@ function App() {
       });
       setItems(data);
     }
-    if(data.length == 0)
+    if(name != "")
     {
-      toast.warn(`「${name}」を含む予定は見つかりませんでした`);
-    }else{
-      if(name != '')
+      if(data.length == 0)
       {
-        toast.info(`「${name}」を含む予定が${data.length}件見つかりました`);
+        toast.warn(`「${name}」を含む予定は見つかりませんでした`);
+      }else{
+        if(name != '')
+        {
+          toast.info(`「${name}」を含む予定が${data.length}件見つかりました`);
+        }
       }
     }
   };
