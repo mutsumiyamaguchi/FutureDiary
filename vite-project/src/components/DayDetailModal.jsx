@@ -114,7 +114,7 @@
 
 
 // これはとても良いと思ったcssを変更した
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const DayDetailModal = ({ date, onClose, onAdd }) => {
   const [content, setContent] = useState("");  // 予定内容の入力内容を管理
