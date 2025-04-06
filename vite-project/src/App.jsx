@@ -160,7 +160,7 @@ function App() {
     // ReactとFirebaseを連携させたサンプル
     <>
        <div style={{ padding: '2rem' }}>
-      <h1>フューチャーダイアリー</h1>
+      <h1>FutureDiary</h1>
     </div>
       {/* 🔽 TODO一覧表示をコンポーネント化！ */}
       <TodoList items={items} onEdit={handleEdit} onDelete={handleDelete} />
