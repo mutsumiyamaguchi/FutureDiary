@@ -98,16 +98,26 @@ function App() {
     setSelectedDate(null);
   };
 
-  const handleAddDiary = async (e) => {
+  const handleAddDiary = async (text,Deditid) => {
     toast.success(`${selectedDate}の日記を追加しました！`);
-    fetchItems();
+    if(Deditid)
+    {
+      // ここで更新
+      await fetch(`${API_URL}/Diary/${Deditid}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        // 実際に送受信するデータ
+        body: JSON.stringify({ id: Deditid, date: selectedDate,text: text }),
+      });
+    }else{
       // ここで送信
       await fetch(API_URL + '/Diary', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         // 実際に送受信するデータ
-        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,text: e}),
+        body: JSON.stringify({ id: Date.now().toString(), date: selectedDate,text: text}),
       });
+    }
     console.log("日記送信済")
     setSelectedDiary(false);
   };

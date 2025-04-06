@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import './SearchForm.css';
 
 const DiaryForm = ({ date, onClose, onAdd }) => {
-    const [keyword, setKeyword] = useState('');
+    const [Text, settext] = useState('');
+    const [editid, setid] = useState(null);
    // Function to handle task addition
    const handleSubmit = async (e) => {
     e.preventDefault();
-    await onAdd(keyword);
+    await onAdd(Text,editid);
   };
  
   const API_URL = 'http://localhost:5000/items';
@@ -15,10 +16,13 @@ const DiaryForm = ({ date, onClose, onAdd }) => {
     const fetchItems = async () => {
         const res = await fetch(`${API_URL}/Diary?date=${date}`);
         let data = await res.json();
-        console.log(data)
-        if(data)
+        if(data.length > 0)
         {
-            setKeyword(data[0].text);
+            setid(data[0].id)
+            settext(data[0].text)
+            console.log(editid)
+        }else{
+            setid(null)
         }
     };
     
@@ -49,8 +53,8 @@ const DiaryForm = ({ date, onClose, onAdd }) => {
           {/* 入力エリア */}
           <textarea
             id="todocontents"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
+            value={Text}
+            onChange={(e) => settext(e.target.value)}
             style={{
               width: "100%",
               padding: "10px",
